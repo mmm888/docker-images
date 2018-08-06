@@ -2,14 +2,15 @@ From alpine
 
 ENV NSD_VERSION 4.1.22
 
-RUN apk add --no-cache --virtual .builddeps build-base bind-tools openssl openssl-dev libevent-dev && \
-    cd /root && \
+RUN : "Install nsd" && \
+    apk add --no-cache --virtual .builddeps build-base bind-tools openssl openssl-dev libevent-dev && \
     wget "https://www.nlnetlabs.nl/downloads/nsd/nsd-${NSD_VERSION}.tar.gz" && \
     tar zxvf nsd-${NSD_VERSION}.tar.gz && \
     cd nsd-${NSD_VERSION} && \
     ./configure && \
     make -j4 && \
     make install && \
+    : "Settings nsd" && \
     adduser -s /sbin/nologin -D -H nsd && \
     mkdir /etc/nsd/master /etc/nsd/var/db /etc/nsd/var/run -p && \
     chown nsd: /etc/nsd/ -R && \
